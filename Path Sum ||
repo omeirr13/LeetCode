@@ -1,0 +1,44 @@
+//https://leetcode.com/problems/path-sum-ii/
+
+
+
+//Time Complexity: O(n)
+//Space Complexity: O(h) //height of tree
+
+class Solution {
+public:
+    void helper(TreeNode* root, vector<int>& v,int& sum, vector<vector<int>>& ans, int targetSum)
+    {
+        if(!root) return;
+        if(!root->left && !root->right)
+        {
+            v.push_back(root->val);
+            sum += root->val;
+            if(!v.empty())
+            {
+                if(sum == targetSum)
+                {
+                    ans.push_back(v);
+                }
+            }
+            v.pop_back();
+            sum -= root->val;
+            return;
+        }
+        
+        
+        v.push_back(root->val);
+        sum = sum + root->val;
+        helper(root->left, v, sum, ans, targetSum);
+        helper(root->right, v, sum, ans, targetSum);
+        sum -= root->val;
+        v.pop_back();
+    }
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>> ans;
+        vector<int> v;
+        int sum = 0;
+        helper(root, v, sum, ans, targetSum);
+        return ans;
+    }
+};
